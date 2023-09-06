@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
 
-    res.send("Git Action Test Sccuess")
+    res.send("Git Action Test Sccuess    ㅇㅇㅇㅇ")
 
 })
 
