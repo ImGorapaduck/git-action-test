@@ -1,32 +1,17 @@
-name: Deploy to Lambda on Push
-
-on:
-  push:
-    branches:
-      - master # 원하는 브랜치로 변경 가능
-
+name: deploy to lambda
+on: [push]
 jobs:
-  deploy:
+  deploy_source:
+    name: deploy lambda from source
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: checkout source code
+        uses: actions/checkout@v1
+      - name: default deploy
+        uses: appleboy/lambda-action@master
         with:
-          node-version: 18.x
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Deploy to Lambda
-        run: |
-          aws lambda update-function-code \
-            --function-name git-action-test \
-            --zip-file fileb://$(pwd)/index.zip
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: ${{ secrets.AWS_REGION }}
+          function_name: git-action-test
+          source: index.js
